@@ -115,6 +115,7 @@ ssize_t read_file(const char* path_to_fs_file,
     uint32_t
         size_to_read = need_to_read < remain_read ? need_to_read : remain_read;
     memcpy(dest, position_to_read, size_to_read);
+    destruct_block(&block);
     fd_position += size_to_read;
     dest += size_to_read;
     total_read += size_to_read;

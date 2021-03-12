@@ -75,6 +75,7 @@ void ls(const char* path_to_fs_file, const char* path_to_dir) {
     return;
   }
 
+  destroy_inode(&inode);
   for (uint16_t record_id = 0; record_id < block.block_info->records_count;
        ++record_id) {
     printf("%s", block.block_records[record_id].path);
