@@ -207,3 +207,22 @@ bool is_dir_exist(const int fd, struct inode* inode, const char* dirname, const 
   destruct_block(&block);
   return false;
 }
+
+uint16_t get_file_inode_id(const int fd, struct inode* inode, const char* dirname, const struct superblock* superblock) {
+  struct block block;
+  if (read_block(fd, &block, inode->block_ids[0], superblock) == -1) {
+    fprintf(stderr, "Can't read block. Abort without cleaning!\n");
+    exit(EXIT_FAILURE);
+  }
+
+  for (uint16_t record_id = 0; record_id < block.block_info->records_count; ++record_id) {
+    if (strcmp(dirname, block.block_records[record_id].path) == 0) {
+      uint16_t inode_id = block.block_records[record_id].inode_id;
+      destruct_block(&block);
+      return inode_id;
+    }
+  }
+
+  destruct_block(&block);
+  return superblock->fs_info->inodes_count;
+}

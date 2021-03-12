@@ -49,4 +49,14 @@ uint16_t get_inode_id_of_dir(int fd, const char* path, const struct superblock* 
  */
 bool is_dir_exist(int fd, struct inode* inode, const char* dirname, const struct superblock* superblock);
 
+/**
+ * @brief Return inode_id of file
+ * @param fd
+ * @param inode
+ * @param dirname
+ * @param superblock
+ * @return inode_id of file if it exists in this node; superblock->fs_info.inodes_count otherwise
+ */
+uint16_t get_file_inode_id(int fd, struct inode* inode, const char* dirname, const struct superblock* superblock);
+
 #endif //EXT_FILESYSTEM_CORE_METHODS_H_

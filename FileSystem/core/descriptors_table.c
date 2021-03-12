@@ -77,6 +77,40 @@ ssize_t write_descriptor_table(const int fd, struct descriptors_table* descripto
   return total_written;
 }
 
+int reserve_descriptor(struct descriptors_table* descriptors_table, uint16_t inode_id, const struct superblock* superblock) {
+  for (uint16_t fd = 0; fd < superblock->fs_info->descriptors_count; ++fd) {
+    if (descriptors_table->fd_to_inode[fd] == inode_id) {
+      fprintf(stderr, "Can't open same inode twice. Abort!\n");
+      return -1;
+    }
+  }
+
+  for (uint16_t fd = 0; fd < superblock->fs_info->descriptors_count; ++fd) {
+    if (!descriptors_table->reserved_fd[fd]) {
+      descriptors_table->reserved_fd[fd] = true;
+      descriptors_table->fd_to_position[fd] = 0;
+      descriptors_table->fd_to_inode[fd] = inode_id;
+      return fd;
+    }
+  }
+
+  fprintf(stderr, "All descriptors are reserved. Abort!\n");
+  return -1;
+}
+
+int free_descriptor(struct descriptors_table* descriptors_table, uint16_t fd, const struct superblock* superblock) {
+  if (!descriptors_table->reserved_fd[fd]) {
+    fprintf(stderr, "Can't release same fd twice. Abort!\n");
+    return -1;
+  }
+
+  descriptors_table->reserved_fd[fd] = false;
+  descriptors_table->fd_to_position[fd] = 0;
+  descriptors_table->fd_to_inode[fd] = 0;
+
+  return fd;
+}
+
 uint16_t sizeof_descriptors_table(const struct superblock* superblock) {
   uint16_t descriptors_count = superblock->fs_info->descriptors_count;
   return descriptors_count * (sizeof(bool) + sizeof(uint16_t) + sizeof(uint32_t));

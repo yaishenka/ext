@@ -8,6 +8,7 @@
 #include "ls.h"
 #include "create_dir.h"
 #include "create_file.h"
+#include "open_file.h"
 #include "../utils.h"
 
 #define LS "ls"
@@ -15,6 +16,7 @@
 #define READ_FS "read_fs"
 #define MKDIR "mkdir"
 #define TOUCH "touch"
+#define OPEN "open"
 #define QUIT "quit"
 
 #define command_buffer_lenght 256
@@ -62,6 +64,15 @@ void client(const char* path_to_fs_file) {
       char path[command_buffer_lenght];
       parse_command(first_arg_pos, path);
       create_file(path_to_fs_file, path);
+    } else if (strcmp(OPEN, command) == 0) {
+      if (first_arg_pos == NULL || strlen(first_arg_pos) == 0) {
+        printf("Open requires path\n");
+        continue;
+      }
+
+      char path[command_buffer_lenght];
+      parse_command(first_arg_pos, path);
+      open_file(path_to_fs_file, path);
     } else {
       printf("Unsupported command\n");
     }

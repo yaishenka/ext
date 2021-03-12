@@ -51,6 +51,24 @@ ssize_t read_descriptors_table(int fd, struct descriptors_table* descriptors_tab
 ssize_t write_descriptor_table(int fd, struct descriptors_table* descriptors_table, const struct superblock* superblock);
 
 /**
+ * @brief Occupy descriptor for inode_id
+ * @param descriptors_table
+ * @param inode_id
+ * @param superblock
+ * @return fd if all ok; -1 otherwise
+ */
+int reserve_descriptor(struct descriptors_table* descriptors_table, uint16_t inode_id, const struct superblock* superblock);
+
+/**
+ * @brief Release descriptor for inode_id
+ * @param descriptors_table
+ * @param fd fd to release
+ * @param superblock
+ * @return d if all ok; -1 otherwise
+ */
+int free_descriptor(struct descriptors_table* descriptors_table, uint16_t fd, const struct superblock* superblock);
+
+/**
  * @brief Sizeof descriptors_table
  * @param superblock
  * @return
