@@ -111,8 +111,8 @@ uint16_t create_file_helper(int fd, const struct superblock* superblock, uint16_
 
   if(write_super_block(fd, superblock) == -1) {
     fprintf(stderr, "Can't write superblock. Abort!\n");
-    free_inode(&superblock, new_inode_id);
-    free_block(&superblock, new_block_id);
+    free_inode(superblock, new_inode_id);
+    free_block(superblock, new_block_id);
     return superblock->fs_info->inodes_count;
   }
 
