@@ -1,0 +1,14 @@
+/** @author yaishenka
+    @date 10.03.2021 */
+#ifndef EXT_FILESYSTEM_CORE_DEFINES_H_
+#define EXT_FILESYSTEM_CORE_DEFINES_H_
+
+#define BLOCK_SIZE 128
+#define INODES_COUNT 128
+#define BLOCKS_COUNT 128
+#define MAX_PATH_LEN 16
+#define DESCRIPTORS_COUNT 16
+#define MAGIC 0xFAF
+#define ROOT_INODE_ID 0
+
+#endif //EXT_FILESYSTEM_CORE_DEFINES_H_
