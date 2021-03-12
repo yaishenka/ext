@@ -15,8 +15,6 @@
 #include "../core/methods.h"
 #include "../utils.h"
 
-#define buffer_size 1024
-
 /**
  * @brief Creates file
  * @param path_to_fs_file
@@ -45,8 +43,8 @@ void create_file(const char* path_to_fs_file, const char* path) {
     exit(EXIT_FAILURE);
   }
 
-  char parent_path[buffer_size];
-  char dirname[buffer_size];
+  char parent_path[buffer_length];
+  char dirname[buffer_length];
 
   if (!split_path(path, parent_path, dirname)) {
     fprintf(stderr, "Incorrect path. Abort!\n");
