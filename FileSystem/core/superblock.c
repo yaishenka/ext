@@ -28,6 +28,7 @@ size_t sizeof_superblock(const struct superblock* superblock) {
 
 void init_super_block(struct superblock* superblock) {
   init_superblock_fs_info(superblock);
+  superblock->fs_info->blocks_count_in_inode = BLOCKS_COUNT_IN_INODE;
   superblock->fs_info->blocks_count = BLOCKS_COUNT;
   superblock->fs_info->inodes_count = INODES_COUNT;
   superblock->fs_info->block_size = BLOCK_SIZE;

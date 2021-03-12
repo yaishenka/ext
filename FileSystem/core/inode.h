@@ -14,6 +14,7 @@
  */
 struct __attribute__((__packed__)) inode_info {
   uint16_t id;
+  uint16_t blocks_count;
   bool is_file;
 };
 
@@ -28,9 +29,9 @@ struct __attribute__((__packed__)) inode {
 };
 
 /**
- * @brief Count blocks_count of inode in bytes
+ * @brief Count size of inode in bytes
  * @param superblock the superblock with metadata of FS
- * @return blocks_count of inode in FS
+ * @return size of inode in FS
  */
 size_t sizeof_inode(const struct superblock* superblock);
 
@@ -70,7 +71,7 @@ ssize_t read_inode(int fd, struct inode* inode, uint16_t inode_id, const struct 
 ssize_t write_inode(int fd, struct inode* inode, const struct superblock* superblock);
 
 /**
- * @brief Calculate blocks_count of all inodes
+ * @brief Calculate size of block of all inodes
  * @param superblock
  * @return
  */

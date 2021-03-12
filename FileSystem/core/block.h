@@ -114,10 +114,28 @@ ssize_t write_block(int fd,
                     const struct superblock* superblock);
 
 /**
- * @brief Return
  * @param superblock
  * @return Maximum number of records in a block
  */
 uint8_t get_max_records_count(const struct superblock* superblock);
+
+/**
+ * @param superblock
+ * @return max data size in one block
+ */
+uint32_t get_max_data_in_block(const struct superblock* superblock);
+
+/**
+ * @param superblock
+ * @return max data size in FS
+ */
+uint32_t get_max_data_size_of_all_blocks(const struct superblock* superblock);
+
+/**
+ * @param block
+ * @param superblock
+ * @return remain size of block
+ */
+uint32_t get_remain_data(const struct block* block, const struct superblock* superblock);
 
 #endif //EXT_FILESYSTEM_CORE_BLOCK_H_

@@ -10,6 +10,7 @@
 #include "create_file.h"
 #include "open_file.h"
 #include "close_file.h"
+#include "write_to_file.h"
 #include "../utils.h"
 
 #define LS "ls"
@@ -20,6 +21,7 @@
 #define OPEN "open"
 #define QUIT "quit"
 #define CLOSE "close"
+#define WRITE "write"
 
 #define command_buffer_lenght 256
 
@@ -85,6 +87,24 @@ void client(const char* path_to_fs_file) {
       uint16_t fd_to_close = strtol(fd_to_close_text, NULL, 10);
 
       close_file(path_to_fs_file, fd_to_close);
+    } else if (strcmp(WRITE, command) == 0) {
+      if (first_arg_pos == NULL || strlen(first_arg_pos) == 0) {
+        printf("Write requires fd\n");
+        continue;
+      }
+
+      char fd_to_write_text[command_buffer_lenght];
+      char* second_arg_position = parse_command(first_arg_pos, fd_to_write_text);
+      uint16_t fd_to_write = strtol(fd_to_write_text, NULL, 10);
+
+      if (second_arg_position == NULL || strlen(second_arg_position) == 0) {
+        printf("Write requires data\n");
+        continue;
+      }
+      char data[command_buffer_lenght];
+      parse_command(second_arg_position, data);
+
+      write_to_file(path_to_fs_file, fd_to_write, data, strlen(data));
     } else {
       printf("Unsupported command\n");
     }

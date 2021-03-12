@@ -26,6 +26,7 @@ uint16_t create_dir_helper(const int fd, const struct superblock* superblock, ui
   struct inode inode;
   init_inode(&inode, new_inode_id, false, superblock);
   inode.block_ids[0] = new_block_id;
+  inode.inode_info->blocks_count = 1;
 
   struct block block;
   init_block_with_records(&block, superblock, new_block_id, new_inode_id, 2);
@@ -86,6 +87,7 @@ uint16_t create_file_helper(int fd, const struct superblock* superblock, uint16_
   struct inode inode;
   init_inode(&inode, new_inode_id, true, superblock);
   inode.block_ids[0] = new_block_id;
+  inode.inode_info->blocks_count = 1;
 
   struct block block;
   init_block(&block, superblock, new_block_id, new_inode_id);

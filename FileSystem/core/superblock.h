@@ -11,8 +11,9 @@
  */
 struct __attribute__((__packed__)) fs_info {
   uint16_t inodes_count;
-  uint16_t block_size;
   uint16_t blocks_count;
+  uint16_t block_size;
+  uint16_t blocks_count_in_inode;
   uint16_t max_path_len;
   uint16_t descriptors_count;
   uint16_t magic;
@@ -29,9 +30,9 @@ struct __attribute__((__packed__)) superblock {
 };
 
 /**
- * Count blocks_count of inode in bytes
+ * Count blocks_count_in_inode of inode in bytes
  * @param superblock
- * @return blocks_count of superblock in FS
+ * @return blocks_count_in_inode of superblock in FS
  */
 size_t sizeof_superblock(const struct superblock* superblock);
 
@@ -78,14 +79,14 @@ uint16_t reserve_inode(const struct superblock* superblock);
  * @brief Release inode
  * @param superblock
  * @param inode_id id of inode to release
- * @return id of inode if all ok; superblock->fs_info->blocks_count if inode was already released
+ * @return id of inode if all ok; superblock->fs_info->blocks_count_in_inode if inode was already released
  */
 uint16_t free_inode(const struct superblock* superblock, uint16_t inode_id);
 
 /**
  * @brief Reserve block
  * @param superblock
- * @return block_id if all ok; superblock->fs_info->blocks_count if all block are reserved
+ * @return block_id if all ok; superblock->fs_info->blocks_count_in_inode if all block are reserved
  */
 uint16_t reserve_block(const struct superblock* superblock);
 

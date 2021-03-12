@@ -100,7 +100,7 @@ void init_block(struct block* block,
   block->block_info->inode_id = inode_id;
   block->block_info->data_size = 0;
   block->block_info->records_count = 0;
-  block->data = NULL;
+  block->data = (char*) calloc(max_size_of_data(superblock), sizeof(char));
   block->block_records = NULL;
 }
 
@@ -135,7 +135,7 @@ ssize_t read_block(const int fd,
                    uint16_t block_id,
                    const struct superblock* superblock) {
   init_block_info(block);
-  block->data = NULL;
+  block->data = (char*) calloc(max_size_of_data(superblock), sizeof(char));
   block->block_records = NULL;
   lseek(fd,
         sizeof_superblock(superblock) + sizeof_descriptors_table(superblock)
@@ -149,6 +149,7 @@ ssize_t read_block(const int fd,
   if (total_read == -1) {
     fprintf(stderr, "%s", strerror(errno));
     free(block->block_info);
+    free(block->data);
     return -1;
   }
 
@@ -178,7 +179,6 @@ ssize_t read_block(const int fd,
 
     return total_read;
   } else if (block->block_info->data_size != 0) {
-    block->data = (char*) calloc(max_size_of_data(superblock), sizeof(char));
     ssize_t readed = read_while(fd, block->data, block->block_info->data_size);
     total_read += readed;
   }
@@ -222,7 +222,7 @@ ssize_t write_block(const int fd,
 
       total_written += written;
     }
-  } else if (block->block_info->data_size != 0) {
+  } else if (block->block_info->data_size != 0 && block->data != NULL) {
     ssize_t written = write_while(fd,
                                   block->data,
                                   max_size_of_data(superblock) * sizeof(char));
@@ -240,5 +240,21 @@ ssize_t write_block(const int fd,
 
 uint8_t get_max_records_count(const struct superblock* superblock) {
   return (uint8_t) (superblock->fs_info->block_size - sizeof(struct block_info)) / sizeof_block_record(superblock);
+}
+
+uint32_t get_max_data_in_block(const struct superblock* superblock) {
+  return superblock->fs_info->block_size - sizeof(struct block_info);
+}
+
+uint32_t get_max_data_size_of_all_blocks(const struct superblock* superblock) {
+  return (uint32_t) (get_max_data_in_block(superblock)) * superblock->fs_info->blocks_count;
+}
+
+uint32_t get_remain_data(const struct block* block, const struct superblock* superblock) {
+  if (block->block_info->records_count > 0) {
+    return 0;
+  }
+
+  return get_max_data_in_block(superblock) - block->block_info->data_size;
 }
 

@@ -84,7 +84,7 @@ void open_file(const char* path_to_fs_file, const char* path) {
     exit(EXIT_FAILURE);
   }
 
-  uint16_t file_inode_id = get_file_inode_id(fd, &inode, filename, &superblock) ;
+  uint16_t file_inode_id = get_file_inode_id(fd, &inode, filename, &superblock);
 
   if (file_inode_id == superblock.fs_info->inodes_count) {
     fprintf(stderr, "File doesn't exist. Abort!\n");
