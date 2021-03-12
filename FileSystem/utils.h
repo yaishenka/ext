@@ -65,6 +65,13 @@ void read_command_from_stdin(char* command_buffer, size_t buffer_size);
  */
 char* parse_command(char* command_buffer, char* command);
 
+/**
+ * @brief Get size of file
+ * @param path_to_file
+ * @return size of file if all ok; -1 otherwise;
+ */
+ssize_t get_file_size(const char* path_to_file);
+
 
 
 #endif //EXT_FILESYSTEM_UTILS_H_

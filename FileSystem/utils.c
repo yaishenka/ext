@@ -2,6 +2,9 @@
     @date 10.03.2021 */
 #include <string.h>
 #include <stdio.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include "utils.h"
 
 int read_while(const int fd, char* buffer, size_t to_read) {
@@ -124,4 +127,33 @@ char* parse_command(char* command_buffer, char* command) {
   }
 
   return first_space == NULL ? NULL : first_space + 1;
+}
+
+ssize_t get_file_size(const char* path_to_file) {
+  int fd = open(path_to_file, O_RDONLY);
+  if (fd == -1) {
+    fprintf(stderr, "Can't open file. Abort!");
+    return -1;
+  }
+
+  FILE* file = fdopen(fd, "rb");
+
+  if (file == NULL) {
+    fprintf(stderr, "Can't open file. Abort!");
+    close(fd);
+    return -1;
+  }
+
+  struct stat stat;
+  if (fstat(fd, &stat) == -1) {
+    fprintf(stderr, "Can't open file. Abort!");
+    fclose(file);
+    close(fd);
+    return -1;
+  }
+
+  ssize_t size = stat.st_size;
+  fclose(file);
+  close(fd);
+  return size;
 }

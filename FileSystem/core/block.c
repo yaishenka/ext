@@ -247,7 +247,7 @@ uint32_t get_max_data_in_block(const struct superblock* superblock) {
 }
 
 uint32_t get_max_data_size_of_all_blocks(const struct superblock* superblock) {
-  return (uint32_t) (get_max_data_in_block(superblock)) * superblock->fs_info->blocks_count;
+  return (uint32_t) (get_max_data_in_block(superblock)) * superblock->fs_info->blocks_count_in_inode;
 }
 
 uint32_t get_remain_data(const struct block* block, const struct superblock* superblock) {

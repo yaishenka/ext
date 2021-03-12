@@ -21,8 +21,9 @@
  * @param file_descriptor opened file descriptor from our FS
  * @param place_to_read
  * @param size
+ * @return count of readed_bytes
  */
-void read_file(const char* path_to_fs_file, uint16_t file_descriptor, char* dest, uint32_t size) {
+ssize_t read_file(const char* path_to_fs_file, uint16_t file_descriptor, char* dest, uint32_t size) {
   int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     fprintf(stderr, "Can't open file. Abort!\n");
@@ -58,11 +59,11 @@ void read_file(const char* path_to_fs_file, uint16_t file_descriptor, char* dest
   }
 
   if (!descriptors_table.reserved_fd[file_descriptor]) {
-    fprintf(stderr, "Trying to write to closed fd. Abort!\n");
+    fprintf(stderr, "Trying to read from closed fd. Abort!\n");
     destruct_descriptors_table(&descriptors_table, &superblock);
     destroy_super_block(&superblock);
     close(fd);
-    return;
+    return -1;
   }
 
   uint32_t fd_position = descriptors_table.fd_to_position[file_descriptor];
@@ -131,6 +132,65 @@ void read_file(const char* path_to_fs_file, uint16_t file_descriptor, char* dest
   close(fd);
 
   printf("Total readed: %d\n", total_read);
+
+  return total_read;
+}
+
+/**
+ * @brief Read data from file
+ * Read data from file and put it to path
+ * @param path_to_fs_file
+ * @param file_descriptor
+ * @param path
+ */
+void read_file_to_file(const char* path_to_fs_file, uint16_t file_descriptor, const char* path) {
+  int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+  if (fd == -1) {
+    fprintf(stderr, "Can't open file. Abort!\n");
+    exit(EXIT_FAILURE);
+  }
+
+  struct superblock superblock;
+  read_super_block(fd, &superblock);
+  if (superblock.fs_info->magic != MAGIC) {
+    fprintf(stderr, "Magic does not match. Abort!\n");
+    destroy_super_block(&superblock);
+    close(fd);
+    exit(EXIT_FAILURE);
+  }
+
+  if (!superblock.reserved_inodes_mask[ROOT_INODE_ID]) {
+    fprintf(stderr, "Root directory doesn't exist. Abort!\n");
+    destroy_super_block(&superblock);
+    close(fd);
+    exit(EXIT_FAILURE);
+  }
+
+  ssize_t max_size = get_max_data_size_of_all_blocks(&superblock);
+  destroy_super_block(&superblock);
+  close(fd);
+
+  char* buffer = calloc(max_size, sizeof(char));
+  ssize_t total_read = read_file(path_to_fs_file, file_descriptor, buffer, max_size);
+
+  if (total_read == -1) {
+    free(buffer);
+    return;
+  }
+
+  fd = open(path, O_RDWR | O_CREAT);
+
+  if (fd == -1) {
+    fprintf(stderr, "Can't open file to write. Abort!\n");
+    free(buffer);
+    return;
+  }
+
+  ssize_t written = write_while(fd, buffer, total_read);
+  free(buffer);
+  close(fd);
+
+  printf("Written %zd to %s\n", written, path);
 }
 
 #endif //EXT_FILESYSTEM_INTERFACE_READ_FILE_H_

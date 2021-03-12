@@ -23,7 +23,9 @@
 #define QUIT "quit"
 #define CLOSE "close"
 #define WRITE "write"
+#define WRITE_FROM "write_from"
 #define READ "read"
+#define READ_TO "read_to"
 
 #define command_buffer_lenght 256
 
@@ -126,6 +128,40 @@ void client(const char* path_to_fs_file) {
       read_file(path_to_fs_file, fd_to_read, data, size);
       data[size] = '\0';
       printf("Readed: %s\n", data);
+    } else if (strcmp(WRITE_FROM, command) == 0) {
+      if (first_arg_pos == NULL || strlen(first_arg_pos) == 0) {
+        printf("Write from requires fd\n");
+        continue;
+      }
+
+      char fd_to_write_text[command_buffer_lenght];
+      char* second_arg_position = parse_command(first_arg_pos, fd_to_write_text);
+      uint16_t fd_to_write = strtol(fd_to_write_text, NULL, 10);
+
+      if (second_arg_position == NULL || strlen(second_arg_position) == 0) {
+        printf("Write from requires path\n");
+        continue;
+      }
+      char path[command_buffer_lenght];
+      parse_command(second_arg_position, path);
+      write_to_file_from_file(path_to_fs_file, fd_to_write, path);
+    } else if (strcmp(READ_TO, command) == 0) {
+      if (first_arg_pos == NULL || strlen(first_arg_pos) == 0) {
+        printf("Read to requires fd\n");
+        continue;
+      }
+
+      char fd_to_write_text[command_buffer_lenght];
+      char* second_arg_position = parse_command(first_arg_pos, fd_to_write_text);
+      uint16_t fd_to_write = strtol(fd_to_write_text, NULL, 10);
+
+      if (second_arg_position == NULL || strlen(second_arg_position) == 0) {
+        printf("Read to requires path\n");
+        continue;
+      }
+      char path[command_buffer_lenght];
+      parse_command(second_arg_position, path);
+      read_file_to_file(path_to_fs_file, fd_to_write, path);
     } else {
       printf("Unsupported command\n");
     }

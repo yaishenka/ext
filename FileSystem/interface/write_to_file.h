@@ -132,7 +132,7 @@ void write_to_file(const char* path_to_fs_file,
         }
         destroy_super_block(&superblock);
         close(fd);
-        return;
+        break;
       }
 
       if (inode.inode_info->blocks_count
@@ -167,7 +167,7 @@ void write_to_file(const char* path_to_fs_file,
         }
         destroy_super_block(&superblock);
         close(fd);
-        return;
+        break;
       }
       init_block(&block, &superblock, new_block_id, inode_id);
       block.data = (char*) calloc(superblock.fs_info->block_size, sizeof(char));
@@ -238,6 +238,39 @@ void write_to_file(const char* path_to_fs_file,
   close(fd);
 
   printf("Total written: %d\n", total_written);
+}
+
+/**
+ * @brief Write data to file
+ * Write data from path_to_file to file by file_descriptor.
+ * @param path_to_fs_file
+ * @param file_descriptor
+ * @param path_to_file
+ */
+void write_to_file_from_file(const char* path_to_fs_file,
+                             uint16_t file_descriptor, const char* path_to_file) {
+  ssize_t size = get_file_size(path_to_file);
+  if (size == -1) {
+    return;
+  }
+
+  int descriptor = open(path_to_file, O_RDONLY);
+  if (descriptor == -1) {
+    fprintf(stderr, "Can't read file with data. Abort!\n");
+    return;
+  }
+
+  char* buffer = (char*) calloc(size, sizeof(char));
+  size = read_while(descriptor, buffer, size);
+
+  close(descriptor);
+
+  if (size == -1) {
+    fprintf(stderr, "Can't read file with data. Abort!\n");
+    return;
+  }
+
+  write_to_file(path_to_fs_file, file_descriptor, buffer, size);
 }
 
 #endif //EXT_FILESYSTEM_INTERFACE_WRITE_TO_FILE_H_
