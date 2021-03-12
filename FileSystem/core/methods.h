@@ -18,7 +18,10 @@
  * @param is_root
  * @return id of new inode if all ok; superblock->fs_info->inodes_count otherwise
  */
-uint16_t create_dir_helper(int fd, const struct superblock* superblock, uint16_t parent_node_id, bool is_root);
+uint16_t create_dir_helper(int fd,
+                           const struct superblock* superblock,
+                           uint16_t parent_node_id,
+                           bool is_root);
 
 /**
  * @brief Helper for create new file
@@ -28,7 +31,9 @@ uint16_t create_dir_helper(int fd, const struct superblock* superblock, uint16_t
  * @param parent_node_id
  * @return id of new inode if all ok; superblock->fs_info->inodes_count otherwise
  */
-uint16_t create_file_helper(int fd, const struct superblock* superblock, uint16_t parent_node_id);
+uint16_t create_file_helper(int fd,
+                            const struct superblock* superblock,
+                            uint16_t parent_node_id);
 
 /**
  * @brief Parse path and find inode of this dir
@@ -37,7 +42,9 @@ uint16_t create_file_helper(int fd, const struct superblock* superblock, uint16_
  * @param superblock
  * @return id of inode of this dir if all ok; superblock->fs_info.inodes_count otherwise
  */
-uint16_t get_inode_id_of_dir(int fd, const char* path, const struct superblock* superblock);
+uint16_t get_inode_id_of_dir(int fd,
+                             const char* path,
+                             const struct superblock* superblock);
 
 /**
  * @brief Check if dir exists in inode
@@ -47,7 +54,10 @@ uint16_t get_inode_id_of_dir(int fd, const char* path, const struct superblock* 
  * @param superblock
  * @return
  */
-bool is_dir_exist(int fd, struct inode* inode, const char* dirname, const struct superblock* superblock);
+bool is_dir_exist(int fd,
+                  struct inode* inode,
+                  const char* dirname,
+                  const struct superblock* superblock);
 
 /**
  * @brief Return inode_id of file
@@ -57,6 +67,9 @@ bool is_dir_exist(int fd, struct inode* inode, const char* dirname, const struct
  * @param superblock
  * @return inode_id of file if it exists in this node; superblock->fs_info.inodes_count otherwise
  */
-uint16_t get_file_inode_id(int fd, struct inode* inode, const char* dirname, const struct superblock* superblock);
+uint16_t get_file_inode_id(int fd,
+                           struct inode* inode,
+                           const char* dirname,
+                           const struct superblock* superblock);
 
 #endif //EXT_FILESYSTEM_CORE_METHODS_H_

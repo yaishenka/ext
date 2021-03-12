@@ -20,16 +20,21 @@ size_t calculate_offset(const struct superblock* superblock,
       + inode_id * sizeof_inode(superblock);
 }
 
-void init_inode_arrays(struct inode* inode, const struct superblock* superblock) {
+void init_inode_arrays(struct inode* inode,
+                       const struct superblock* superblock) {
   inode->block_ids =
-      (uint16_t*) calloc(superblock->fs_info->blocks_count_in_inode, sizeof(uint16_t));
+      (uint16_t*) calloc(superblock->fs_info->blocks_count_in_inode,
+                         sizeof(uint16_t));
 }
 
 void init_inode_info(struct inode* inode) {
   inode->inode_info = (struct inode_info*) calloc(1, sizeof(struct inode_info));
 }
 
-void init_inode(struct inode* inode, uint16_t id, bool is_file, const struct superblock* superblock) {
+void init_inode(struct inode* inode,
+                uint16_t id,
+                bool is_file,
+                const struct superblock* superblock) {
   init_inode_info(inode);
   inode->inode_info->id = id;
   inode->inode_info->is_file = is_file;
@@ -63,7 +68,8 @@ ssize_t read_inode(int fd,
 
   ssize_t readed = read_while(fd,
                               (char*) inode->block_ids,
-                              sizeof(uint16_t) * superblock->fs_info->blocks_count_in_inode);
+                              sizeof(uint16_t)
+                                  * superblock->fs_info->blocks_count_in_inode);
 
   if (readed == -1) {
     fprintf(stderr, "%s", strerror(errno));
@@ -91,7 +97,8 @@ ssize_t write_inode(int fd,
 
   ssize_t written = write_while(fd,
                                 (const char*) inode->block_ids,
-                                sizeof(uint16_t) * superblock->fs_info->blocks_count_in_inode);
+                                sizeof(uint16_t)
+                                    * superblock->fs_info->blocks_count_in_inode);
 
   if (written == -1) {
     fprintf(stderr, "%s", strerror(errno));

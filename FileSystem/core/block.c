@@ -239,7 +239,8 @@ ssize_t write_block(const int fd,
 }
 
 uint8_t get_max_records_count(const struct superblock* superblock) {
-  return (uint8_t) (superblock->fs_info->block_size - sizeof(struct block_info)) / sizeof_block_record(superblock);
+  return (uint8_t) (superblock->fs_info->block_size - sizeof(struct block_info))
+      / sizeof_block_record(superblock);
 }
 
 uint32_t get_max_data_in_block(const struct superblock* superblock) {
@@ -247,10 +248,12 @@ uint32_t get_max_data_in_block(const struct superblock* superblock) {
 }
 
 uint32_t get_max_data_size_of_all_blocks(const struct superblock* superblock) {
-  return (uint32_t) (get_max_data_in_block(superblock)) * superblock->fs_info->blocks_count_in_inode;
+  return (uint32_t) (get_max_data_in_block(superblock))
+      * superblock->fs_info->blocks_count_in_inode;
 }
 
-uint32_t get_remain_data(const struct block* block, const struct superblock* superblock) {
+uint32_t get_remain_data(const struct block* block,
+                         const struct superblock* superblock) {
   if (block->block_info->records_count > 0) {
     return 0;
   }

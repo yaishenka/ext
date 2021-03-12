@@ -125,7 +125,8 @@ uint16_t reserve_inode(const struct superblock* superblock) {
   return superblock->fs_info->inodes_count;
 }
 
-uint16_t free_inode(const struct superblock* superblock, const uint16_t inode_id) {
+uint16_t free_inode(const struct superblock* superblock,
+                    const uint16_t inode_id) {
   if (superblock->reserved_inodes_mask[inode_id]) {
     superblock->reserved_inodes_mask[inode_id] = false;
     return inode_id;

@@ -75,10 +75,14 @@ void ls(const char* path_to_fs_file, const char* path_to_dir) {
     return;
   }
 
-  for (uint16_t record_id = 0; record_id < block.block_info->records_count; ++record_id) {
+  for (uint16_t record_id = 0; record_id < block.block_info->records_count;
+       ++record_id) {
     printf("%s", block.block_records[record_id].path);
 
-    if (read_inode(fd, &inode, block.block_records[record_id].inode_id, &superblock) == -1) {
+    if (read_inode(fd,
+                   &inode,
+                   block.block_records[record_id].inode_id,
+                   &superblock) == -1) {
       fprintf(stderr, "Can't read inode. Abort!\n");
       destroy_super_block(&superblock);
       close(fd);

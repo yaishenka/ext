@@ -98,8 +98,4 @@ uint16_t reserve_block(const struct superblock* superblock);
  */
 uint16_t free_block(const struct superblock* superblock, uint16_t block_id);
 
-
-
-
-
 #endif //EXT_FILESYSTEM_SUBERBLOCK_H_

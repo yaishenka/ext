@@ -8,7 +8,6 @@
 #include <unistd.h>
 #include "inode.h"
 
-
 /**
  * @brief Contains information about filename/dirname
  */
@@ -136,6 +135,7 @@ uint32_t get_max_data_size_of_all_blocks(const struct superblock* superblock);
  * @param superblock
  * @return remain size of block
  */
-uint32_t get_remain_data(const struct block* block, const struct superblock* superblock);
+uint32_t get_remain_data(const struct block* block,
+                         const struct superblock* superblock);
 
 #endif //EXT_FILESYSTEM_CORE_BLOCK_H_

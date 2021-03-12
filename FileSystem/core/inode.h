@@ -41,7 +41,10 @@ size_t sizeof_inode(const struct superblock* superblock);
  * @param id id of inode
  * @param is_file
  */
-void init_inode(struct inode* inode, uint16_t id, bool is_file, const struct superblock* superblock);
+void init_inode(struct inode* inode,
+                uint16_t id,
+                bool is_file,
+                const struct superblock* superblock);
 
 /**
  * @brief Destructor of inode
@@ -58,7 +61,10 @@ void destroy_inode(struct inode* inode);
  * @return sizeof(inode) if reading is ok; -1 otherwise and destruct inode object
  * @warning printf strerror(errno) to stderr
  */
-ssize_t read_inode(int fd, struct inode* inode, uint16_t inode_id, const struct superblock* superblock);
+ssize_t read_inode(int fd,
+                   struct inode* inode,
+                   uint16_t inode_id,
+                   const struct superblock* superblock);
 
 /**
  * @brief Write inode from memory
@@ -68,7 +74,9 @@ ssize_t read_inode(int fd, struct inode* inode, uint16_t inode_id, const struct 
  * @return sizeof(inode) if writing is ok; -1 otherwise
  * @warning printf strerror(errno) to stderr
  */
-ssize_t write_inode(int fd, struct inode* inode, const struct superblock* superblock);
+ssize_t write_inode(int fd,
+                    struct inode* inode,
+                    const struct superblock* superblock);
 
 /**
  * @brief Calculate size of block of all inodes
@@ -76,8 +84,5 @@ ssize_t write_inode(int fd, struct inode* inode, const struct superblock* superb
  * @return
  */
 uint16_t sizeof_inodes_block(const struct superblock* superblock);
-
-
-
 
 #endif //EXT_FILESYSTEM_INODE_H_

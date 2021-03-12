@@ -23,14 +23,16 @@ struct __attribute__((__packed__)) descriptors_table {
  * @param descriptors_table
  * @param superblock
  */
-void init_descriptors_table(struct descriptors_table* descriptors_table, const struct superblock* superblock);
+void init_descriptors_table(struct descriptors_table* descriptors_table,
+                            const struct superblock* superblock);
 
 /**
  * @brief Destructor of superblock
  * @param descriptors_table
  * @param superblock
  */
-void destruct_descriptors_table(struct descriptors_table* descriptors_table, const struct superblock* superblock);
+void destruct_descriptors_table(struct descriptors_table* descriptors_table,
+                                const struct superblock* superblock);
 
 /**
  * @brief Read descriptors_table from memory
@@ -39,7 +41,9 @@ void destruct_descriptors_table(struct descriptors_table* descriptors_table, con
  * @param superblock
  * @return sizeof(descriptor_table) of reading is ok; -1 otherwise and destruct descriptors_table
  */
-ssize_t read_descriptors_table(int fd, struct descriptors_table* descriptors_table, const struct superblock* superblock);
+ssize_t read_descriptors_table(int fd,
+                               struct descriptors_table* descriptors_table,
+                               const struct superblock* superblock);
 
 /**
  * @brief Write descriptors_table to memory
@@ -48,7 +52,9 @@ ssize_t read_descriptors_table(int fd, struct descriptors_table* descriptors_tab
  * @param superblock
  * @return sizeof(descriptor_table) of writing is ok; -1 otherwise
  */
-ssize_t write_descriptor_table(int fd, struct descriptors_table* descriptors_table, const struct superblock* superblock);
+ssize_t write_descriptor_table(int fd,
+                               struct descriptors_table* descriptors_table,
+                               const struct superblock* superblock);
 
 /**
  * @brief Occupy descriptor for inode_id
@@ -57,7 +63,9 @@ ssize_t write_descriptor_table(int fd, struct descriptors_table* descriptors_tab
  * @param superblock
  * @return fd if all ok; -1 otherwise
  */
-int reserve_descriptor(struct descriptors_table* descriptors_table, uint16_t inode_id, const struct superblock* superblock);
+int reserve_descriptor(struct descriptors_table* descriptors_table,
+                       uint16_t inode_id,
+                       const struct superblock* superblock);
 
 /**
  * @brief Release descriptor for inode_id
@@ -66,7 +74,9 @@ int reserve_descriptor(struct descriptors_table* descriptors_table, uint16_t ino
  * @param superblock
  * @return d if all ok; -1 otherwise
  */
-int free_descriptor(struct descriptors_table* descriptors_table, uint16_t fd, const struct superblock* superblock);
+int free_descriptor(struct descriptors_table* descriptors_table,
+                    uint16_t fd,
+                    const struct superblock* superblock);
 
 /**
  * @brief Sizeof descriptors_table

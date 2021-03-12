@@ -9,7 +9,6 @@
 
 #define buffer_length 1024
 
-
 /**
  * @brief Properly reading from memory
  * @param fd
@@ -71,7 +70,5 @@ char* parse_command(char* command_buffer, char* command);
  * @return size of file if all ok; -1 otherwise;
  */
 ssize_t get_file_size(const char* path_to_file);
-
-
 
 #endif //EXT_FILESYSTEM_UTILS_H_

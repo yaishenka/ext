@@ -23,7 +23,10 @@
  * @param size
  * @return count of readed_bytes
  */
-ssize_t read_file(const char* path_to_fs_file, uint16_t file_descriptor, char* dest, uint32_t size) {
+ssize_t read_file(const char* path_to_fs_file,
+                  uint16_t file_descriptor,
+                  char* dest,
+                  uint32_t size) {
   int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     fprintf(stderr, "Can't open file. Abort!\n");
@@ -109,7 +112,8 @@ ssize_t read_file(const char* path_to_fs_file, uint16_t file_descriptor, char* d
     if (remain_read == 0) {
       break;
     }
-    uint32_t size_to_read = need_to_read < remain_read ? need_to_read : remain_read;
+    uint32_t
+        size_to_read = need_to_read < remain_read ? need_to_read : remain_read;
     memcpy(dest, position_to_read, size_to_read);
     fd_position += size_to_read;
     dest += size_to_read;
@@ -142,8 +146,11 @@ ssize_t read_file(const char* path_to_fs_file, uint16_t file_descriptor, char* d
  * @param path_to_fs_file
  * @param file_descriptor
  * @param path
+ * @param size if size == -1 file will be readed till end
  */
-void read_file_to_file(const char* path_to_fs_file, uint16_t file_descriptor, const char* path) {
+void read_file_to_file(const char* path_to_fs_file,
+                       uint16_t file_descriptor,
+                       const char* path, ssize_t size) {
   int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     fprintf(stderr, "Can't open file. Abort!\n");
@@ -167,11 +174,13 @@ void read_file_to_file(const char* path_to_fs_file, uint16_t file_descriptor, co
   }
 
   ssize_t max_size = get_max_data_size_of_all_blocks(&superblock);
+  max_size = size == -1 ? max_size : (size > max_size ? max_size : size);
   destroy_super_block(&superblock);
   close(fd);
 
   char* buffer = calloc(max_size, sizeof(char));
-  ssize_t total_read = read_file(path_to_fs_file, file_descriptor, buffer, max_size);
+  ssize_t total_read =
+      read_file(path_to_fs_file, file_descriptor, buffer, max_size);
 
   if (total_read == -1) {
     free(buffer);
