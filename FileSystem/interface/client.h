@@ -11,6 +11,7 @@
 #include "open_file.h"
 #include "close_file.h"
 #include "write_to_file.h"
+#include "read_file.h"
 #include "../utils.h"
 
 #define LS "ls"
@@ -22,6 +23,7 @@
 #define QUIT "quit"
 #define CLOSE "close"
 #define WRITE "write"
+#define READ "read"
 
 #define command_buffer_lenght 256
 
@@ -105,11 +107,51 @@ void client(const char* path_to_fs_file) {
       parse_command(second_arg_position, data);
 
       write_to_file(path_to_fs_file, fd_to_write, data, strlen(data));
+    } else if (strcmp(READ, command) == 0) {
+      char fd_to_read_text[command_buffer_lenght];
+      char* second_arg_position = parse_command(first_arg_pos, fd_to_read_text);
+      uint16_t fd_to_read = strtol(fd_to_read_text, NULL, 10);
+
+      if (second_arg_position == NULL || strlen(second_arg_position) == 0) {
+        printf("Read requires size\n");
+        continue;
+      }
+
+      char size_to_read_text[command_buffer_lenght];
+      parse_command(second_arg_position, size_to_read_text);
+      uint32_t size = strtol(size_to_read_text, NULL, 10);
+
+      char data[command_buffer_lenght];
+
+      read_file(path_to_fs_file, fd_to_read, data, size);
+      data[size] = '\0';
+      printf("Readed: %s\n", data);
     } else {
       printf("Unsupported command\n");
     }
   }
 }
+/*
+close /main
+open /main
+opened fd: 0
+read 0 5
+Total readed: 3
+Readed: kek
+close /main
+open /main
+opened fd: 0
+write 0 123456789kek
+Total written: 12
+close 0
+open /main
+File doesn't exist. Abort!
+ls /
+.
+ls /
+ls /
+quit
+ */
 
 
 #endif //EXT_FILESYSTEM_INTERFACE_CLIENT_H_

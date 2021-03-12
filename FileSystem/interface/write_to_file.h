@@ -189,6 +189,7 @@ void write_to_file(const char* path_to_fs_file,
     uint32_t remain_size =
         get_max_data_in_block(&superblock) - position_in_block_data;
     uint32_t size_to_write = need_to_write_size < remain_size ? need_to_write_size : remain_size;
+    block.block_info->data_size = position_in_block_data;
     memcpy(position_to_write, data, size_to_write);
     block.block_info->data_size += size_to_write;
     if (write_block(fd, &block, &superblock) == -1) {
