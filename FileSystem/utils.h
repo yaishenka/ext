@@ -3,6 +3,7 @@
 #ifndef EXT_FILESYSTEM_UTILS_H_
 #define EXT_FILESYSTEM_UTILS_H_
 #include <stdlib.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <stdbool.h>
 

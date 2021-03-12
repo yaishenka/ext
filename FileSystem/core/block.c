@@ -123,6 +123,9 @@ void destruct_block(struct block* block) {
   for (uint8_t i = 0; i < block->block_info->records_count; ++i) {
     destruct_block_record(block->block_records + i);
   }
+  if (block->block_records != NULL) {
+    free(block->block_records);
+  }
 
   free(block->block_info);
 }
