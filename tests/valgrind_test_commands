@@ -1,0 +1,13 @@
+init
+ls /
+touch /main
+ls /
+mkdir /test_dir
+ls /test_dir
+touch /test_dir/main2
+open /main
+write 0 testdata
+lseek 0 0
+read 0 8
+close 0
+quit
