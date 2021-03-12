@@ -15,7 +15,7 @@
 #include "../utils.h"
 
 /**
- *
+ * @brief Open file and printf fd
  * @param path_to_fs_file
  * @param path
  */
