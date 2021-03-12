@@ -22,7 +22,7 @@
 void client(const char* path_to_fs_file) {
   char buffer[command_buffer_lenght];
 
-  while (strcmp(QUIT, buffer) != 0) {
+  while (true) {
     read_command_from_stdin(buffer, command_buffer_lenght);
     char command[command_buffer_lenght];
     char* first_arg_pos = parse_command(buffer, command);
