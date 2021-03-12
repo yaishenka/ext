@@ -43,16 +43,12 @@ void create_dir(const char* path_to_fs_file, const char* path) {
     exit(EXIT_FAILURE);
   }
 
-  char* parent_path =
-      (char*) calloc(superblock.fs_info->max_path_len + 1, sizeof(char));
-  char* dirname =
-      (char*) calloc(superblock.fs_info->max_path_len + 1, sizeof(char));
+  char parent_path[buffer_length];
+  char dirname[buffer_length];
 
   if (!split_path(path, parent_path, dirname)) {
     fprintf(stderr, "Incorrect path. Abort!\n");
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
     return;
   }
@@ -62,8 +58,6 @@ void create_dir(const char* path_to_fs_file, const char* path) {
   if (inode_id == superblock.fs_info->inodes_count) {
     fprintf(stderr, "Can't find directory. Abort!\n");
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
     return;
   }
@@ -72,8 +66,6 @@ void create_dir(const char* path_to_fs_file, const char* path) {
   if (read_inode(fd, &inode, inode_id, &superblock) == -1) {
     fprintf(stderr, "Can't read inode. Abort!\n");
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
@@ -81,8 +73,6 @@ void create_dir(const char* path_to_fs_file, const char* path) {
     fprintf(stderr, "Trying to touch in file. Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
     return;
   }
@@ -91,8 +81,6 @@ void create_dir(const char* path_to_fs_file, const char* path) {
     fprintf(stderr, "File already exist! Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
     return;
   }
@@ -103,8 +91,6 @@ void create_dir(const char* path_to_fs_file, const char* path) {
     fprintf(stderr, "Can't create more inodes! Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
@@ -113,8 +99,6 @@ void create_dir(const char* path_to_fs_file, const char* path) {
     fprintf(stderr, "Can't read block. Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
@@ -122,8 +106,6 @@ void create_dir(const char* path_to_fs_file, const char* path) {
     fprintf(stderr, "Can't create more files in this dir. Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
@@ -141,16 +123,12 @@ void create_dir(const char* path_to_fs_file, const char* path) {
     destroy_inode(&inode);
     destruct_block(&block);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
   destroy_inode(&inode);
   destruct_block(&block);
   destroy_super_block(&superblock);
-  free(parent_path);
-  free(dirname);
   close(fd);
 }
 

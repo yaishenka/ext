@@ -138,7 +138,6 @@ bool get_inode_id_of_dir_rec(const int fd, const char* path, uint16_t* current_i
   if (strcmp(current_file_name, "/") == 0) {
     destroy_inode(&inode);
     free(current_file_name);
-    free(path_to_parse);
     return true;
   }
 
@@ -160,7 +159,6 @@ bool get_inode_id_of_dir_rec(const int fd, const char* path, uint16_t* current_i
     destruct_block(&block);
     destroy_inode(&inode);
     free(current_file_name);
-    free(path_to_parse);
     return false;
   }
 
@@ -170,14 +168,12 @@ bool get_inode_id_of_dir_rec(const int fd, const char* path, uint16_t* current_i
     destruct_block(&block);
     destroy_inode(&inode);
     free(current_file_name);
-    free(path_to_parse);
     return true;
   } else {
     bool result = get_inode_id_of_dir_rec(fd, path_to_parse, current_inode_id, superblock);
     destruct_block(&block);
     destroy_inode(&inode);
     free(current_file_name);
-    free(path_to_parse);
     return result;
   }
 

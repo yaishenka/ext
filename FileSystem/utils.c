@@ -96,7 +96,7 @@ bool split_path(const char* path, char* parent_path, char* dirname) {
   }
 
   memcpy(parent_path, buffer, last_slash_pos - buffer + 1);
-
+  parent_path[last_slash_pos - buffer + 1] = '\0';
   memcpy(dirname, last_slash_pos + 1, buffer_length - strlen(parent_path));
 
   if (strlen(dirname) == 0) {

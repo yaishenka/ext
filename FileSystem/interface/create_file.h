@@ -15,6 +15,8 @@
 #include "../core/methods.h"
 #include "../utils.h"
 
+#define buffer_size 1024
+
 /**
  * @brief Creates file
  * @param path_to_fs_file
@@ -43,38 +45,28 @@ void create_file(const char* path_to_fs_file, const char* path) {
     exit(EXIT_FAILURE);
   }
 
-  char* parent_path =
-      (char*) calloc(superblock.fs_info->max_path_len + 1, sizeof(char));
-  char* dirname =
-      (char*) calloc(superblock.fs_info->max_path_len + 1, sizeof(char));
+  char parent_path[buffer_size];
+  char dirname[buffer_size];
 
-  printf("Дошли до сплита пути!\n");
   if (!split_path(path, parent_path, dirname)) {
     fprintf(stderr, "Incorrect path. Abort!\n");
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
     return;
   }
 
-  uint16_t inode_id = 0; //get_inode_id_of_dir(fd, parent_path, &superblock);
+  uint16_t inode_id = get_inode_id_of_dir(fd, parent_path, &superblock);
   if (inode_id == superblock.fs_info->inodes_count) {
     fprintf(stderr, "Can't find directory. Abort!\n");
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
     return;
   }
 
-  printf("Дошли до чтения ноды!\n");
   struct inode inode;
   if (read_inode(fd, &inode, inode_id, &superblock) == -1) {
     fprintf(stderr, "Can't read inode. Abort!\n");
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
@@ -82,8 +74,6 @@ void create_file(const char* path_to_fs_file, const char* path) {
     fprintf(stderr, "Trying to mkdir in file. Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
     return;
   }
@@ -92,32 +82,24 @@ void create_file(const char* path_to_fs_file, const char* path) {
     fprintf(stderr, "Dir already exist! Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
     return;
   }
 
-  printf("Дошли до создания файла!\n");
   uint16_t new_inode_id = create_file_helper(fd, &superblock, inode_id);
 
   if (new_inode_id == superblock.fs_info->inodes_count) {
     fprintf(stderr, "Can't create more inodes! Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
-  printf("Дошли до чтения блока!\n");
   struct block block;
   if (read_block(fd, &block, inode.block_ids[0], &superblock) == -1) {
     fprintf(stderr, "Can't read block. Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
@@ -125,12 +107,10 @@ void create_file(const char* path_to_fs_file, const char* path) {
     fprintf(stderr, "Can't create more files in this dir. Abort!\n");
     destroy_inode(&inode);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
+    return;
   }
 
-  printf("Дошли до создания рекорда!\n");
   block.block_records = (struct block_record*) realloc(block.block_records,
                                                        (block.block_info->records_count
                                                            + 1)
@@ -145,17 +125,12 @@ void create_file(const char* path_to_fs_file, const char* path) {
     destroy_inode(&inode);
     destruct_block(&block);
     destroy_super_block(&superblock);
-    free(parent_path);
-    free(dirname);
     close(fd);
   }
 
-  printf("Дошли до дестроя!\n");
   destroy_inode(&inode);
   destruct_block(&block);
   destroy_super_block(&superblock);
-  free(parent_path);
-  free(dirname);
   close(fd);
 }
 
