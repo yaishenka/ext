@@ -94,11 +94,12 @@ void ls(const char* path_to_fs_file, const char* path_to_dir) {
       printf(" -- file");
     }
 
+    destroy_inode(&inode);
+
     printf("\n");
   }
 
   destruct_block(&block);
-  destroy_inode(&inode);
   destroy_super_block(&superblock);
   close(fd);
 }

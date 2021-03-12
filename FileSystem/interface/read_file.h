@@ -110,6 +110,7 @@ ssize_t read_file(const char* path_to_fs_file,
     char* position_to_read = block.data + position_in_block_data;
     uint32_t remain_read = block.block_info->data_size - position_in_block_data;
     if (remain_read == 0) {
+      destruct_block(&block);
       break;
     }
     uint32_t
