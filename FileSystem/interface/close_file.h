@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 13.03.2021 */
+/**
+ * @file close_file.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains method to close FD
+ */
 #ifndef EXT_FILESYSTEM_INTERFACE_CLOSE_FILE_H_
 #define EXT_FILESYSTEM_INTERFACE_CLOSE_FILE_H_
 #include <stdlib.h>

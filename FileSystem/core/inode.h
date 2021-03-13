@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 10.03.2021 */
+/**
+ * @file inode.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains inode struct and its methods
+ */
 #ifndef EXT_FILESYSTEM_INODE_H_
 #define EXT_FILESYSTEM_INODE_H_
 

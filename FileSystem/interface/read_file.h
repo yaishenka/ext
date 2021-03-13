@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 13.03.2021 */
+/**
+ * @file read_file.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains methods to read from file
+ */
 #ifndef EXT_FILESYSTEM_INTERFACE_READ_FILE_H_
 #define EXT_FILESYSTEM_INTERFACE_READ_FILE_H_
 

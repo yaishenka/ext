@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 12.03.2021 */
+/**
+ * @file create_dir.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains method to create dir
+ */
 #ifndef EXT_FILESYSTEM_INTERFACE_CREATE_DIR_H_
 #define EXT_FILESYSTEM_INTERFACE_CREATE_DIR_H_
 

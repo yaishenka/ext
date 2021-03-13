@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 12.03.2021 */
+/**
+ * @file methods.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains useful methods to work with FS
+ */
 #ifndef EXT_FILESYSTEM_CORE_METHODS_H_
 #define EXT_FILESYSTEM_CORE_METHODS_H_
 #include <string.h>

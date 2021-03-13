@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 12.03.2021 */
+/**
+ * @file ls.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains method to list dir
+ */
 #ifndef EXT_FILESYSTEM_INTERFACE_LS_H_
 #define EXT_FILESYSTEM_INTERFACE_LS_H_
 #include <stdlib.h>

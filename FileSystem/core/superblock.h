@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 10.03.2021 */
+/**
+ * @file superblock.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains superblock struct and its methods
+ */
 #ifndef EXT_FILESYSTEM_SUBERBLOCK_H_
 #define EXT_FILESYSTEM_SUBERBLOCK_H_
 

@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 12.03.2021 */
+/**
+ * @file open_file.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains method to open file
+ */
 #ifndef EXT_FILESYSTEM_INTERFACE_OPEN_FILE_H_
 #define EXT_FILESYSTEM_INTERFACE_OPEN_FILE_H_
 #include <stdlib.h>

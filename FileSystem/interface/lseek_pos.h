@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 13.03.2021 */
+/**
+ * @file lseek_pos.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains method to lseek
+ */
 #ifndef EXT_FILESYSTEM_INTERFACE_LSEEK_POS_H_
 #define EXT_FILESYSTEM_INTERFACE_LSEEK_POS_H_
 #include <stdlib.h>

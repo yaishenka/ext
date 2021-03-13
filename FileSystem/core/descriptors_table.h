@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 12.03.2021 */
+/**
+ * @file descriptors_table.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains descriptors_table struct and its methods
+ */
 #ifndef EXT_FILESYSTEM_CORE_DESCRIPTORS_TABLE_H_
 #define EXT_FILESYSTEM_CORE_DESCRIPTORS_TABLE_H_
 #include <stdint.h>

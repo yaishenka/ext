@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 12.03.2021 */
+/**
+ * @file write_to_file.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains methods to write to file
+ */
 #ifndef EXT_FILESYSTEM_INTERFACE_WRITE_TO_FILE_H_
 #define EXT_FILESYSTEM_INTERFACE_WRITE_TO_FILE_H_
 

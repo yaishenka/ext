@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 10.03.2021 */
+/**
+ * @file defines.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains constants of FS
+ */
 #ifndef EXT_FILESYSTEM_CORE_DEFINES_H_
 #define EXT_FILESYSTEM_CORE_DEFINES_H_
 

@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 10.03.2021 */
+/**
+ * @file utils.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains some useful methods
+ */
 #ifndef EXT_FILESYSTEM_UTILS_H_
 #define EXT_FILESYSTEM_UTILS_H_
 #include <stdlib.h>
@@ -43,7 +47,7 @@ char* parse_path(const char* path, char* current_file_name);
  * @param parent_path
  * @param name
  * @return true if all ok and false otherwise
- * @example Let path be /test/a. Function will save /test/ to parent_path and a to dirname
+do * @example Let path be /test/a. Function will save /test/ to parent_path and a to dirname
  */
 bool split_path(const char* path, char* parent_path, char* dirname);
 

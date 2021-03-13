@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 11.03.2021 */
+/**
+ * @file block.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains block struct and its methods
+ */
 #ifndef EXT_FILESYSTEM_CORE_BLOCK_H_
 #define EXT_FILESYSTEM_CORE_BLOCK_H_
 

@@ -1,5 +1,9 @@
-/** @author yaishenka
-    @date 12.03.2021 */
+/**
+ * @file client.h
+ * @author yaishenka
+ * @date 13.03.2021
+ * @brief Contains main loop
+ */
 #ifndef EXT_FILESYSTEM_INTERFACE_CLIENT_H_
 #define EXT_FILESYSTEM_INTERFACE_CLIENT_H_
 #include <unistd.h>
