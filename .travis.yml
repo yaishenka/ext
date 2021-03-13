@@ -1,0 +1,24 @@
+language: c
+install:
+  - sudo apt-get update
+  - sudo apt-get install -y --no-install-recommends cmake
+  - sudo apt-get install -y --no-install-recommends valgrind
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make 
+  - valgrind --leak-check=yes --log-file=log.txt ./ext < ../tests/valgrind_test_commands
+  - echo "Valgrind log:"
+  - cat log.txt
+  - python python ../tests/valgrind_parser.py
+
+after_succes:
+  - doxygen Doxyfile
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: docs/html
+  github_token: $GH_REPO_TOKEN
