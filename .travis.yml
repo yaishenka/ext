@@ -18,6 +18,7 @@ script:
   - echo "Valgrind log:"
   - cat log.txt
   - python ../tests/valgrind_parser.py
+  - cd ..
 
 after_succes:
   - doxygen Doxyfile
