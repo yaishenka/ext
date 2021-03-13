@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.com/yaishenka/ext.svg?branch=main)](https://travis-ci.com/yaishenka/ext)
 
 
-[Documentation](https://yaishenka.github.io/EarleyAlgorithm/)
+[Documentation](https://yaishenka.github.io/ext/)
 
 # Commands
 
