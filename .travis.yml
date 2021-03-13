@@ -4,6 +4,11 @@ install:
   - sudo apt-get install -y --no-install-recommends cmake
   - sudo apt-get install -y --no-install-recommends valgrind
 
+addons:
+  apt:
+    packages:
+      - doxygen
+
 script:
   - mkdir build
   - cd build
