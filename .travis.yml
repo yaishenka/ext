@@ -27,3 +27,4 @@ deploy:
   skip_cleanup: true
   local_dir: docs/html
   github_token: $GH_REPO_TOKEN
+  all_branches: true
