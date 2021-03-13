@@ -12,7 +12,7 @@ script:
   - valgrind --leak-check=yes --log-file=log.txt ./ext < ../tests/valgrind_test_commands
   - echo "Valgrind log:"
   - cat log.txt
-  - python python ../tests/valgrind_parser.py
+  - python ../tests/valgrind_parser.py
 
 after_succes:
   - doxygen Doxyfile
