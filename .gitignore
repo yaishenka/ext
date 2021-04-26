@@ -13,3 +13,4 @@ _deps
 cmake-build-debug/
 docs/
 Doxyfile.bak
+build/

@@ -7,7 +7,7 @@
 #include <string.h>
 #include "superblock.h"
 #include "defines.h"
-#include "../utils.h"
+#include "../../utils/utils.h"
 
 void init_superblock_arrays(struct superblock* superblock) {
   superblock->reserved_blocks_mask =

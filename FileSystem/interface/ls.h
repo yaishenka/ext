@@ -21,9 +21,10 @@
  * @brief List directory
  * @param path_to_fs_file
  * @param path_to_dir
+ * @param output_fd fd to print answer
  * @warning Must be called only on initialized fs file
  */
-void ls(const char* path_to_fs_file, const char* path_to_dir) {
+void ls(const char* path_to_fs_file, const char* path_to_dir, int output_fd) {
   int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     fprintf(stderr, "Can't open file. Abort!\n");
@@ -80,27 +81,44 @@ void ls(const char* path_to_fs_file, const char* path_to_dir) {
   }
 
   destroy_inode(&inode);
+
+  char* buffer = NULL;
+  size_t buffer_size = 0;
   for (uint16_t record_id = 0; record_id < block.block_info->records_count;
        ++record_id) {
-    printf("%s", block.block_records[record_id].path);
+    buffered_write(&buffer, &buffer_size, block.block_records[record_id].path, strlen(block.block_records[record_id].path) * sizeof(char));
+//    printf("%s", block.block_records[record_id].path);
 
     if (read_inode(fd,
                    &inode,
                    block.block_records[record_id].inode_id,
                    &superblock) == -1) {
       fprintf(stderr, "Can't read inode. Abort!\n");
+      if (buffer != NULL) {
+        free(buffer);
+      }
       destroy_super_block(&superblock);
       close(fd);
       return;
     }
 
     if (inode.inode_info->is_file) {
-      printf(" -- file");
+      buffered_write(&buffer, &buffer_size, " -- file", strlen(" -- file") * sizeof(char));
+//      printf(" -- file");
     }
 
     destroy_inode(&inode);
 
-    printf("\n");
+
+    buffered_write(&buffer, &buffer_size, "\n", strlen("\n") * sizeof(char));
+//    printf("\n");
+  }
+
+
+  write_while(STDOUT_FILENO, buffer, buffer_size);
+  send_data(output_fd, buffer, buffer_size);
+  if (buffer != NULL) {
+    free(buffer);
   }
 
   destruct_block(&block);

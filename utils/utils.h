@@ -14,6 +14,15 @@
 #define buffer_length 1024
 
 /**
+ * Realloc buffer to accommodate data and write data to it
+ * @param buffer
+ * @param data
+ * @param size
+ * @return
+ */
+int buffered_write(char** buffer, size_t* buffer_size, char* data, size_t size);
+
+/**
  * @brief Properly reading from memory
  * @param fd
  * @param buffer
@@ -23,7 +32,7 @@
 int read_while(int fd, char* buffer, size_t to_read);
 
 /**
- * @brief Properly writng to memory
+ * @brief Properly writing to memory
  * @param fd
  * @param buffer
  * @param to_write

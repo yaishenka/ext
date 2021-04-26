@@ -17,7 +17,7 @@
 #include "write_to_file.h"
 #include "read_file.h"
 #include "lseek_pos.h"
-#include "../utils.h"
+#include "utils.h"
 
 #define HELP "help"
 #define LS "ls"

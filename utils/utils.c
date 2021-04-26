@@ -7,6 +7,19 @@
 #include <unistd.h>
 #include "utils.h"
 
+int buffered_write(char** buffer, size_t* buffer_size, char* data, size_t size) {
+  if (*buffer == NULL) {
+    *buffer = calloc(size, sizeof(char));
+  } else {
+    *buffer = realloc(*buffer, *buffer_size + size);
+  }
+
+  memcpy(*buffer + *buffer_size, data, size);
+  *buffer_size += size;
+
+  return size;
+}
+
 int read_while(const int fd, char* buffer, size_t to_read) {
   size_t total = 0;
 

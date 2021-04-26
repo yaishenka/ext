@@ -16,7 +16,7 @@
 #include "../core/descriptors_table.h"
 #include "../core/defines.h"
 #include "../core/methods.h"
-#include "../utils.h"
+#include "../../utils/utils.h"
 
 void lseek_pos(const char* path_to_fs_file,
                uint16_t file_descriptor,

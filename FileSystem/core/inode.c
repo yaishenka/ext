@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <string.h>
 #include "inode.h"
-#include "../utils.h"
+#include "../../utils/utils.h"
 #include "descriptors_table.h"
 
 size_t sizeof_inode(const struct superblock* superblock) {
