@@ -27,8 +27,8 @@ script:
   - echo "Valgrind log:"
   - cat log.txt
   - python ../../tests/valgrind_parser.py
-  - cd ..
-  - cd ..
+  - cd ${TRAVIS_BUILD_DIR}
+  - sudo rm -r build
 
 after_succes:
   - doxygen Doxyfile
