@@ -3,7 +3,6 @@ os: linux
 dist: trusty
 install:
   - DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
-  - cd ~
   - mkdir ${DEPS_DIR} && cd ${DEPS_DIR}
   - travis_retry wget --no-check-certificate https://cmake.org/files/v3.20/cmake-3.20.0-linux-x86_64.tar.gz
   - tar -xvf cmake-3.20.0-linux-x86_64.tar.gz > /dev/null
@@ -30,6 +29,7 @@ script:
   - python ../../tests/valgrind_parser.py
   - cd ${TRAVIS_BUILD_DIR}
   - sudo rm -r build
+  - sudo rm -r ${DEPS_DIR}
 
 after_succes:
   - doxygen Doxyfile
