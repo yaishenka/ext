@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['send_5fclose_5fcommand',['send_close_command',['../handlers_8h.html#a64647ee8333d0738893e55e1b0d7f298',1,'handlers.c']]],
+  ['send_5fcommand',['send_command',['../net__utils_8h.html#a36eec45a560bf3b945487f3574de74af',1,'net_utils.c']]],
+  ['send_5fdata',['send_data',['../net__utils_8h.html#aeefeee892d50429fbff15c8676fac5d8',1,'net_utils.c']]],
+  ['send_5fhelp_5fcommand',['send_help_command',['../handlers_8h.html#a55a3fad1440cad396e5373e3055a6f1b',1,'handlers.c']]],
+  ['send_5finit_5fcommand',['send_init_command',['../handlers_8h.html#a7b7918b995f18552fad98d7ff16ed159',1,'handlers.c']]],
+  ['send_5fls_5fcommand',['send_ls_command',['../handlers_8h.html#afb1e688c863bc742a5d98f6a0e40abc0',1,'handlers.c']]],
+  ['send_5flseek_5fcommand',['send_lseek_command',['../handlers_8h.html#a022084ce7ccf0eaac96983468647326a',1,'handlers.c']]],
+  ['send_5fmkdir_5fcommand',['send_mkdir_command',['../handlers_8h.html#acd989255c55dbbb9af904e78fdd428f6',1,'handlers.c']]],
+  ['send_5fopen_5fcommand',['send_open_command',['../handlers_8h.html#a5bf327c65b2bb3ffd1157b689504a8da',1,'handlers.c']]],
+  ['send_5fquit_5fcommand',['send_quit_command',['../handlers_8h.html#ab202a2c87098a534e66449a2a1b8bc5c',1,'handlers.c']]],
+  ['send_5fread_5fcommand',['send_read_command',['../handlers_8h.html#ad8059723b62cde9444e1606dba6392e7',1,'handlers.c']]],
+  ['send_5fread_5ffs_5fcommand',['send_read_fs_command',['../handlers_8h.html#a42d6fd0e80492178b379b24d90e274c8',1,'handlers.c']]],
+  ['send_5fread_5fto_5fcommand',['send_read_to_command',['../handlers_8h.html#a2564a0a26522e9528b581cd48d2fbc5b',1,'handlers.c']]],
+  ['send_5ftouch_5fcommand',['send_touch_command',['../handlers_8h.html#ab646d76cbaf84ce5af5a05d9f3b0a2b6',1,'handlers.c']]],
+  ['send_5fwrite_5fcommand',['send_write_command',['../handlers_8h.html#aa501825de4476ad5b47cc7d8a80805bb',1,'handlers.c']]],
+  ['send_5fwrite_5ffrom_5fcommand',['send_write_from_command',['../handlers_8h.html#aba74767fe69204ca1f7d6752e51a6d0d',1,'handlers.c']]],
+  ['server_5floop',['server_loop',['../server_8h.html#ab34be15df8448bf1f9a764878bf6b453',1,'server.c']]],
+  ['sizeof_5fdescriptors_5ftable',['sizeof_descriptors_table',['../descriptors__table_8h.html#a8b83bd62e399358f73769030fa0c58a1',1,'descriptors_table.c']]],
+  ['sizeof_5finode',['sizeof_inode',['../inode_8h.html#a3fecdc0310c51560e55c3768b81cd646',1,'inode.c']]],
+  ['sizeof_5finodes_5fblock',['sizeof_inodes_block',['../inode_8h.html#af21c249c3f02bc806f7fc709588f71f4',1,'inode.c']]],
+  ['sizeof_5fsuperblock',['sizeof_superblock',['../superblock_8h.html#a9c23babce81bd44711e1d4c27244b423',1,'superblock.c']]]
+];
