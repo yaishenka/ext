@@ -14,6 +14,7 @@ install:
   - sudo make install
   - cmake --version
   - sudo apt-get install -y --no-install-recommends valgrind
+  - cd ~
 
 addons:
   apt:
@@ -21,6 +22,7 @@ addons:
       - doxygen
 
 script:
+  - ls
   - mkdir build
   - cd build
   - cmake ..
