@@ -1,5 +1,5 @@
 ## Mini version of EXT
-[![Build Status](https://travis-ci.com/yaishenka/ext.svg?branch=main)](https://travis-ci.com/yaishenka/ext)
+[![Build Status](https://travis-ci.com/yaishenka/ext.svg?branch=minifs-net)](https://travis-ci.com/yaishenka/ext)
 
 
 [Documentation](https://yaishenka.github.io/ext/)
@@ -33,3 +33,20 @@
 `read_to [fd] [path] [size]` - read file from fd.pos and write data to path. If size not specified file will be readed till end
 
 `lseek [fd] [pos]` - set fd.pos = pos
+
+# Usage
+
+    mkdir build
+    cd build
+    cmake ..
+    make
+
+In first terminal:
+
+    cd FileSystem
+    ./server
+
+In second:
+
+    cd client
+    ./client
