@@ -2,18 +2,18 @@ language: c
 install:
   - sudo apt-get update
   - sudo apt remove --purge --auto-remove cmake
+  - CMAKE_URL="https://cmake.org/files/v3.20/cmake-3.20.0-linux-x86_64.tar.gz"
+  - mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+  - cmake --version
   - sudo apt-get install -y --no-install-recommends valgrind
 
 addons:
   apt:
     packages:
-      - cmake
       - doxygen
-    sources:
-      - kalakris-cmake
 
 script:
-  - ls
   - mkdir build
   - cd build
   - cmake ..
