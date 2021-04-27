@@ -16,14 +16,17 @@
 #include "../core/descriptors_table.h"
 #include "../core/defines.h"
 #include "../core/methods.h"
-#include "../../utils/utils.h"
+#include "utils.h"
+#include "net_utils.h"
 
 /**
  * @brief Open file and printf fd
  * @param path_to_fs_file
  * @param path
  */
-void open_file(const char* path_to_fs_file, const char* path) {
+void open_file(const char* path_to_fs_file, const char* path, int output_fd) {
+  char* buffer = NULL;
+  size_t buffer_size = 0;
   int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     fprintf(stderr, "Can't open file. Abort!\n");
@@ -50,7 +53,10 @@ void open_file(const char* path_to_fs_file, const char* path) {
   char filename[buffer_length];
 
   if (!split_path(path, parent_path, filename)) {
-    fprintf(stderr, "Incorrect path. Abort!\n");
+    buffered_write(&buffer, &buffer_size, "Incorrect path. Abort!\n", strlen("Incorrect path. Abort!\n"));
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
     destroy_super_block(&superblock);
     close(fd);
     return;
@@ -58,7 +64,10 @@ void open_file(const char* path_to_fs_file, const char* path) {
 
   uint16_t inode_id = get_inode_id_of_dir(fd, parent_path, &superblock);
   if (inode_id == superblock.fs_info->inodes_count) {
-    fprintf(stderr, "Can't find directory. Abort!\n");
+    buffered_write(&buffer, &buffer_size, "Can't find directory. Abort!\n", strlen("Can't find directory. Abort!\n"));
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
     destroy_super_block(&superblock);
     close(fd);
     return;
@@ -66,13 +75,19 @@ void open_file(const char* path_to_fs_file, const char* path) {
 
   struct inode inode;
   if (read_inode(fd, &inode, inode_id, &superblock) == -1) {
-    fprintf(stderr, "Can't read inode. Abort!\n");
+    buffered_write(&buffer, &buffer_size, "Can't read inode. Abort!\n", strlen("Can't read inode. Abort!\n"));
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
     destroy_super_block(&superblock);
     close(fd);
   }
 
   if (inode.inode_info->is_file) {
-    fprintf(stderr, "File doesn't exist. Abort!\n");
+    buffered_write(&buffer, &buffer_size, "File doesn't exist. Abort!\n", strlen("File doesn't exist. Abort!\n"));
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
     destroy_inode(&inode);
     destroy_super_block(&superblock);
     close(fd);
@@ -91,7 +106,10 @@ void open_file(const char* path_to_fs_file, const char* path) {
   uint16_t file_inode_id = get_file_inode_id(fd, &inode, filename, &superblock);
 
   if (file_inode_id == superblock.fs_info->inodes_count) {
-    fprintf(stderr, "File doesn't exist. Abort!\n");
+    buffered_write(&buffer, &buffer_size, "File doesn't exist. Abort!\n", strlen("File doesn't exist. Abort!\n"));
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
     destruct_descriptors_table(&descriptors_table, &superblock);
     destroy_inode(&inode);
     destroy_super_block(&superblock);
@@ -103,7 +121,10 @@ void open_file(const char* path_to_fs_file, const char* path) {
       reserve_descriptor(&descriptors_table, file_inode_id, &superblock);
 
   if (new_fd == -1) {
-    fprintf(stderr, "Can't open file. Abort!\n");
+    buffered_write(&buffer, &buffer_size, "Can't open file. Abort!\n", strlen("Can't open file. Abort!\n"));
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
     destruct_descriptors_table(&descriptors_table, &superblock);
     destroy_inode(&inode);
     destroy_super_block(&superblock);
@@ -120,7 +141,14 @@ void open_file(const char* path_to_fs_file, const char* path) {
     exit(EXIT_FAILURE);
   }
 
-  printf("opened fd: %d\n", new_fd);
+  char string_buffer[1024];
+  size_t string_size = sprintf(string_buffer, "opened fd: %d\n", new_fd);
+  buffered_write(&buffer, &buffer_size, string_buffer, strlen(string_buffer));
+  write_while(STDERR_FILENO, buffer, buffer_size);
+  send_data(output_fd, buffer, buffer_size);
+  free(buffer);
+
+
   destruct_descriptors_table(&descriptors_table, &superblock);
   destroy_inode(&inode);
   destroy_super_block(&superblock);

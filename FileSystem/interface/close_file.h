@@ -16,14 +16,18 @@
 #include "../core/descriptors_table.h"
 #include "../core/defines.h"
 #include "../core/methods.h"
-#include "../../utils/utils.h"
+#include "utils.h"
+#include "net_utils.h"
 
 /**
  * @brief Close file
  * @param path_to_fs_file
- * @param path
+ * @param fd_to_close
+ * @param output_fd
  */
-void close_file(const char* path_to_fs_file, const int fd_to_close) {
+void close_file(const char* path_to_fs_file, const int fd_to_close, int output_fd) {
+  char* buffer = NULL;
+  size_t buffer_size = 0;
   int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     fprintf(stderr, "Can't open file. Abort!\n");
@@ -61,6 +65,14 @@ void close_file(const char* path_to_fs_file, const int fd_to_close) {
     destroy_super_block(&superblock);
     close(fd);
     exit(EXIT_FAILURE);
+  }
+
+  if (buffer != NULL) {
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
+  } else {
+    send_data(output_fd, NULL, 0);
   }
 
   destruct_descriptors_table(&descriptors_table, &superblock);

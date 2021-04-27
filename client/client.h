@@ -17,11 +17,12 @@
 #define TOUCH "touch"
 #define OPEN "open"
 #define CLOSE "close"
-#define WRITE "write"
-#define WRITE_FROM "write_from"
-#define READ "read"
-#define READ_TO "read_to"
 #define LSEEK "lseek"
+#define WRITE "write"
+#define READ "read"
+#define WRITE_FROM "write_from"
+#define READ_TO "read_to"
+
 
 #define command_buffer_lenght 256
 

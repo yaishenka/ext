@@ -17,7 +17,8 @@
 #include "../core/descriptors_table.h"
 #include "../core/defines.h"
 #include "../core/methods.h"
-#include "../../utils/utils.h"
+#include "utils.h"
+#include "net_utils.h"
 
 /**
  * @brief Read data from file
@@ -30,7 +31,9 @@
 ssize_t read_file(const char* path_to_fs_file,
                   uint16_t file_descriptor,
                   char* dest,
-                  uint32_t size) {
+                  uint32_t size, int output_fd) {
+  char* buffer = NULL;
+  size_t buffer_size = 0;
   int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     fprintf(stderr, "Can't open file. Abort!\n");
@@ -66,7 +69,10 @@ ssize_t read_file(const char* path_to_fs_file,
   }
 
   if (!descriptors_table.reserved_fd[file_descriptor]) {
-    fprintf(stderr, "Trying to read from closed fd. Abort!\n");
+    buffered_write(&buffer, &buffer_size, "Trying to read from closed fd. Abort!\n", strlen("Trying to read from closed fd. Abort!\n"));
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
     destruct_descriptors_table(&descriptors_table, &superblock);
     destroy_super_block(&superblock);
     close(fd);
@@ -141,8 +147,6 @@ ssize_t read_file(const char* path_to_fs_file,
   destroy_super_block(&superblock);
   close(fd);
 
-  printf("Total readed: %d\n", total_read);
-
   return total_read;
 }
 
@@ -185,8 +189,8 @@ void read_file_to_file(const char* path_to_fs_file,
   close(fd);
 
   char* buffer = calloc(max_size, sizeof(char));
-  ssize_t total_read =
-      read_file(path_to_fs_file, file_descriptor, buffer, max_size);
+  ssize_t total_read = 0;
+      read_file(path_to_fs_file, file_descriptor, buffer, max_size, STDOUT_FILENO);
 
   if (total_read == -1) {
     free(buffer);

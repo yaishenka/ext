@@ -17,6 +17,8 @@
 #include "../core/descriptors_table.h"
 #include "../core/defines.h"
 #include "../core/methods.h"
+#include "utils.h"
+#include "net_utils.h"
 
 /**
  * @brief Init filesystem

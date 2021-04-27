@@ -17,7 +17,8 @@
 #include "../core/descriptors_table.h"
 #include "../core/defines.h"
 #include "../core/methods.h"
-#include "../../utils/utils.h"
+#include "utils.h"
+#include "net_utils.h"
 
 /**
  * @brief Write data to file
@@ -26,11 +27,14 @@
  * @param file_descriptor opened file descriptor from our FS
  * @param data data to write
  * @param size size should be \leq max_data_size
+ * @param output_fd
  */
 void write_to_file(const char* path_to_fs_file,
                    uint16_t file_descriptor,
                    char* data,
-                   uint32_t size) {
+                   uint32_t size, int output_fd) {
+  char* buffer = NULL;
+  size_t buffer_size = 0;
   int fd = open(path_to_fs_file, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     fprintf(stderr, "Can't open file. Abort!\n");
@@ -66,7 +70,10 @@ void write_to_file(const char* path_to_fs_file,
   }
 
   if (!descriptors_table.reserved_fd[file_descriptor]) {
-    fprintf(stderr, "Trying to write to closed fd. Abort!\n");
+    buffered_write(&buffer, &buffer_size, "Trying to write to closed fd. Abort!\n", strlen("Trying to write to closed fd. Abort!\n"));
+    write_while(STDERR_FILENO, buffer, buffer_size);
+    send_data(output_fd, buffer, buffer_size);
+    free(buffer);
     destruct_descriptors_table(&descriptors_table, &superblock);
     destroy_super_block(&superblock);
     close(fd);
@@ -106,7 +113,10 @@ void write_to_file(const char* path_to_fs_file,
     } else {
       uint16_t new_block_id = reserve_block(&superblock);
       if (new_block_id == superblock.fs_info->blocks_count) {
-        fprintf(stderr, "Can't create more blocks in FS. Abort!\n");
+        buffered_write(&buffer, &buffer_size, "Can't create more blocks in FS. Abort!\n", strlen("Can't create more blocks in FS. Abort!\n"));
+        write_while(STDERR_FILENO, buffer, buffer_size);
+        send_data(output_fd, buffer, buffer_size);
+        free(buffer);
 
         descriptors_table.fd_to_position[file_descriptor] = fd_position;
         if (write_descriptor_table(fd, &descriptors_table, &superblock) == -1) {
@@ -141,7 +151,10 @@ void write_to_file(const char* path_to_fs_file,
 
       if (inode.inode_info->blocks_count
           == superblock.fs_info->blocks_count_in_inode) {
-        fprintf(stderr, "Can't create more blocks in this inode. Abort!\n");
+        buffered_write(&buffer, &buffer_size, "Can't create more blocks in this inode. Abort!\n", strlen("Can't create more blocks in this inode. Abort!\n"));
+        write_while(STDERR_FILENO, buffer, buffer_size);
+        send_data(output_fd, buffer, buffer_size);
+        free(buffer);
 
         descriptors_table.fd_to_position[file_descriptor] = fd_position;
         if (write_descriptor_table(fd, &descriptors_table, &superblock) == -1) {
@@ -241,7 +254,11 @@ void write_to_file(const char* path_to_fs_file,
   destroy_super_block(&superblock);
   close(fd);
 
-  printf("Total written: %d\n", total_written);
+  char string_buffer[1024];
+  size_t string_size = sprintf(string_buffer, "Total written: %d\n", total_written);
+  buffered_write(&buffer, &buffer_size, string_buffer, strlen(string_buffer));
+  send_data(output_fd, buffer, buffer_size);
+  free(buffer);
 }
 
 /**
@@ -274,7 +291,7 @@ void write_to_file_from_file(const char* path_to_fs_file,
     return;
   }
 
-  write_to_file(path_to_fs_file, file_descriptor, buffer, size);
+  write_to_file(path_to_fs_file, file_descriptor, buffer, size, STDOUT_FILENO);
 }
 
 #endif //EXT_FILESYSTEM_INTERFACE_WRITE_TO_FILE_H_

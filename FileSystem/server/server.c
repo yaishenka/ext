@@ -95,6 +95,68 @@ bool process_command(int sockd, const char* fs_file_path) {
       break;
     }
 
+    case Open: {
+      char* path = NULL;
+      size_t path_len = 0;
+      receive_data(sockd, &path, &path_len);
+      open_file(fs_file_path, path, sockd);
+      break;
+    }
+
+    case Close: {
+      char* fd_to_close_string = NULL;
+      size_t fd_to_close_string_len = 0;
+      receive_data(sockd, &fd_to_close_string, &fd_to_close_string_len);
+      int fd_to_close = strtol(fd_to_close_string, NULL, 10);
+      close_file(fs_file_path, fd_to_close, sockd);
+      break;
+    }
+
+    case Lseek: {
+      char* full_string = NULL;
+      size_t len = 0;
+      receive_data(sockd, &full_string, &len);
+      char* next_arg = NULL;
+      int fd = strtol(full_string, &next_arg, 10);
+      int position = strtol(next_arg, NULL, 10);
+      lseek_pos(fs_file_path, fd, position, sockd);
+      break;
+    }
+
+    case Write: {
+      char* full_string = NULL;
+      size_t len = 0;
+      receive_data(sockd, &full_string, &len);
+      char* next_arg = NULL;
+      int fd = strtol(full_string, &next_arg, 10);
+      char* data = NULL;
+      size_t size = strtol(next_arg, &data, 10);
+      write_to_file(fs_file_path, fd, data + 1, size, sockd);
+      break;
+    }
+
+    case Read: {
+      char* full_string = NULL;
+      size_t len = 0;
+      receive_data(sockd, &full_string, &len);
+      char* next_arg = NULL;
+      int fd = strtol(full_string, &next_arg, 10);
+      int size = strtol(next_arg, NULL, 10);
+      char data[buffer_length];
+
+      size_t total_read = read_file(fs_file_path, fd, data, size, sockd);
+      data[size] = '\0';
+
+      char* buffer = NULL;
+      size_t buffer_size = 0;
+      char string_buffer[size + 1];
+      size_t string_size = sprintf(string_buffer, "\t%zu\t%s", total_read, data);
+      buffered_write(&buffer, &buffer_size, string_buffer, strlen(string_buffer));
+      send_data(sockd, buffer, buffer_size);
+      free(buffer);
+      break;
+    }
+
     default: {
       break;
     }

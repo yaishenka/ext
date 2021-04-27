@@ -18,6 +18,7 @@
 #include "read_file.h"
 #include "lseek_pos.h"
 #include "utils.h"
+#include "net_utils.h"
 
 #define HELP "help"
 #define LS "ls"
@@ -77,7 +78,7 @@ void client(const char* path_to_fs_file) {
 
       char path[command_buffer_lenght];
       parse_command(first_arg_pos, path);
-      ls(path_to_fs_file, path);
+      ls(path_to_fs_file, path, STDOUT_FILENO);
     } else if (strcmp(QUIT, command) == 0) {
       return;
     } else if (strcmp(MKDIR, command) == 0) {
@@ -88,7 +89,7 @@ void client(const char* path_to_fs_file) {
 
       char path[command_buffer_lenght];
       parse_command(first_arg_pos, path);
-      create_dir(path_to_fs_file, path);
+      create_dir(path_to_fs_file, path, STDOUT_FILENO);
     } else if (strcmp(TOUCH, command) == 0) {
       if (first_arg_pos == NULL || strlen(first_arg_pos) == 0) {
         printf("Mkdir requires path\n");
@@ -97,7 +98,7 @@ void client(const char* path_to_fs_file) {
 
       char path[command_buffer_lenght];
       parse_command(first_arg_pos, path);
-      create_file(path_to_fs_file, path);
+      create_file(path_to_fs_file, path, STDOUT_FILENO);
     } else if (strcmp(OPEN, command) == 0) {
       if (first_arg_pos == NULL || strlen(first_arg_pos) == 0) {
         printf("Open requires path\n");
@@ -106,7 +107,7 @@ void client(const char* path_to_fs_file) {
 
       char path[command_buffer_lenght];
       parse_command(first_arg_pos, path);
-      open_file(path_to_fs_file, path);
+      open_file(path_to_fs_file, path, STDOUT_FILENO);
     } else if (strcmp(CLOSE, command) == 0) {
       if (first_arg_pos == NULL || strlen(first_arg_pos) == 0) {
         printf("Open requires path\n");
@@ -116,7 +117,7 @@ void client(const char* path_to_fs_file) {
       parse_command(first_arg_pos, fd_to_close_text);
       uint16_t fd_to_close = strtol(fd_to_close_text, NULL, 10);
 
-      close_file(path_to_fs_file, fd_to_close);
+      close_file(path_to_fs_file, fd_to_close, STDOUT_FILENO);
     } else if (strcmp(WRITE, command) == 0) {
       if (first_arg_pos == NULL || strlen(first_arg_pos) == 0) {
         printf("Write requires fd\n");
@@ -135,7 +136,7 @@ void client(const char* path_to_fs_file) {
       char data[command_buffer_lenght];
       parse_command(second_arg_position, data);
 
-      write_to_file(path_to_fs_file, fd_to_write, data, strlen(data));
+      write_to_file(path_to_fs_file, fd_to_write, data, strlen(data), STDOUT_FILENO);
     } else if (strcmp(READ, command) == 0) {
       char fd_to_read_text[command_buffer_lenght];
       char* second_arg_position = parse_command(first_arg_pos, fd_to_read_text);
@@ -152,7 +153,7 @@ void client(const char* path_to_fs_file) {
 
       char data[command_buffer_lenght];
 
-      read_file(path_to_fs_file, fd_to_read, data, size);
+      read_file(path_to_fs_file, fd_to_read, data, size, STDOUT_FILENO);
       data[size] = '\0';
       printf("Readed: %s\n", data);
     } else if (strcmp(WRITE_FROM, command) == 0) {
@@ -218,7 +219,7 @@ void client(const char* path_to_fs_file) {
       parse_command(second_arg_position, pos_text);
       uint32_t pos = strtol(pos_text, NULL, 10);
 
-      lseek_pos(path_to_fs_file, fd_to_seek, pos);
+      lseek_pos(path_to_fs_file, fd_to_seek, pos, STDOUT_FILENO);
     } else {
       printf("Unsupported command\n");
     }

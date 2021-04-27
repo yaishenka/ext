@@ -13,11 +13,13 @@ script:
   - mkdir build
   - cd build
   - cmake ..
-  - make 
-  - valgrind --leak-check=yes --log-file=log.txt ./ext < ../tests/valgrind_test_commands
+  - make
+  - cd FileSystem
+  - valgrind --leak-check=yes --log-file=log.txt ./client_without_server < ../../tests/valgrind_test_commands
   - echo "Valgrind log:"
   - cat log.txt
-  - python ../tests/valgrind_parser.py
+  - python ../../tests/valgrind_parser.py
+  - cd ..
   - cd ..
 
 after_succes:
