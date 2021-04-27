@@ -223,7 +223,9 @@ int server_loop(long port, const char* fs_file_path) {
 
       if (connection_fd == -1) {
         fprintf(stderr, "Connection error. Abort!\n");
-        exit(EXIT_FAILURE);
+        shutdown(sockd, SHUT_RDWR);
+        close(sockd);
+        return 1;
       }
     }
 #else
@@ -236,7 +238,9 @@ int server_loop(long port, const char* fs_file_path) {
     connection_fd = accept(sockd, NULL, NULL);
     if (connection_fd == -1) {
         fprintf(stderr, "Connection error. Abort!\n");
-        exit(EXIT_FAILURE);
+        shutdown(sockd, SHUT_RDWR);
+        close(sockd);
+        return 1;
     }
 #endif
     while (process_command(connection_fd, fs_file_path)) {
@@ -250,6 +254,8 @@ int server_loop(long port, const char* fs_file_path) {
 
 #if __APPLE__
 #else
-  close(epoll_fd)
+  close(epoll_fd);
 #endif
+
+  return 0;
 }
